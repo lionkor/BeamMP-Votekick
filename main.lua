@@ -158,7 +158,6 @@ local function handle_chat_message(sender_id, sender_name, message)
             end
         end
     end
-    end
 end
 
 MP.RegisterEvent("onInit", "handle_init")
