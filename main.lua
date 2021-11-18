@@ -23,6 +23,11 @@ function trim(s)
   return (s:gsub("^%s*(.-)%s*$", "%1"))
 end
 
+local stringMetatable = getmetatable("string")
+stringMetatable.__index["trim"] = trim
+stringMetatable.__index["split"] = splitString
+stringMetatable.__index["startsWith"] = startsWith
+
 function splitString(s, delimiter)
   local result = {}
   delimiter = delimiter or " "
