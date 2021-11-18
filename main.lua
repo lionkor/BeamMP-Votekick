@@ -66,6 +66,7 @@ function send_needed_amount()
 end
 
 function handle_chat_message(sender_id, sender_name, message)
+    print("got '" .. message .. "'")
     if #message >= #votekick_command and string.sub(message, 1, #votekick_command) == votekick_command then
         local subcmd = string.sub(message, #votekick_command, -1)
         if #subcmd == 0 then
