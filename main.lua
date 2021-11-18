@@ -21,12 +21,12 @@ function handle_init()
         print("error: votekick_no missing from `votekick_config.lua`")
         bad = true
     end
-    if not votekick_timeout_minutes then
-        print("error: votekick_timeout_minutes missing from `votekick_config.lua`")
-        bad = true
-    end
     if not votekick_repeatable then
         print("error: votekick_repeatable missing from `votekick_config.lua`")
+        bad = true
+    end
+    if not votekick_timeout_minutes then
+        print("error: votekick_timeout_minutes missing from `votekick_config.lua`")
         bad = true
     end
     if bad then
