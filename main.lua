@@ -71,11 +71,11 @@ function handle_chat_message(sender_id, sender_name, message)
         if #subcmd == 0 then
             send_help(sender_id)
         elseif votekick_in_progress then
-            MP.SendChatMessage(sender_id, "VOTEKICK: A vote is already in progress (to kick '"..votekick_name .."', started by '".. votekick_starter .."')")
+            MP.SendChatMessage(sender_id, "VOTEKICK (to you): A vote is already in progress (to kick '"..votekick_name .."', started by '".. votekick_starter .."')")
             print("'" .. sender_name .. "' tried to start a votekick, but one is already in progress")
         else
             if MP.GetPlayerCount() < 3 then
-                MP.SendChatMessage(sender_id, "VOTEKICK: More than 2 people needed for a votekick to start.")
+                MP.SendChatMessage(sender_id, "VOTEKICK (to you): More than 2 people needed for a votekick to start.")
             else
                 local id, name = get_player_by_name(subcmd)
                 if id and name then
@@ -97,9 +97,10 @@ function handle_chat_message(sender_id, sender_name, message)
                 end
             end
         end
+        return 1
     elseif #message >= #votekick_yes and string.sub(message, 1, #votekick_yes) == votekick_yes then
         if votekick_in_progress then
-            MP.SendChatMessage(sender_id, "VOTEKICK: You voted YES")
+            MP.SendChatMessage(sender_id, "VOTEKICK (to you): You voted YES")
             MP.SendChatMessage(-1, "VOTEKICK: '" .. sender_name .. "' voted YES on vote to kick '" .. votekick_name .. "'")
             print(sender_name .. " voted YES")
             votekick_votes_yes = votekick_votes_yes + 1
@@ -109,9 +110,10 @@ function handle_chat_message(sender_id, sender_name, message)
                 send_needed_amount()
             end
         end
+        return 1
     elseif #message >= #votekick_no and string.sub(message, 1, #votekick_no) == votekick_no then
         if votekick_in_progress then
-            MP.SendChatMessage(sender_id, "VOTEKICK: You voted NO")
+            MP.SendChatMessage(sender_id, "VOTEKICK (to you): You voted NO")
             MP.SendChatMessage(-1, "VOTEKICK: '" .. sender_name .. "' voted NO on vote to kick '" .. votekick_name .. "'")
             print(sender_name .. " voted NO")
             votekick_votes_no = votekick_votes_no + 1
@@ -121,6 +123,7 @@ function handle_chat_message(sender_id, sender_name, message)
                 send_needed_amount()
             end
         end
+        return 1
     end
 end
 
@@ -156,9 +159,9 @@ function handle_init()
     end
     print("lionkor/votekick: Votekick requirement set to " .. tostring(votekick_percent) .. "%. This can be changed in the config file `votekick_config.lua`.")
     MP.CreateEventTimer("votekick_timeout_timer", 60 * 1000)
+    MP.RegisterEvent("onChatMessage", "handle_chat_message")
+    MP.RegisterEvent("votekick_timeout_timer", "votekick_timeout_handler")
 end
-MP.RegisterEvent("onChatMessage", "handle_chat_message")
-MP.RegisterEvent("votekick_timeout_timer", "votekick_timeout_handler")
 
 MP.RegisterEvent("onInit", "handle_init")
 
