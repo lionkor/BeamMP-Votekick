@@ -3,8 +3,6 @@
 -- load config as lua
 require("votekick_config")
 
-
-
 -- id, name
 function get_player_by_name(name)
     if name and #name > 0 then
@@ -157,10 +155,10 @@ function handle_init()
         return
     end
     print("lionkor/votekick: Votekick requirement set to " .. tostring(votekick_percent) .. "%. This can be changed in the config file `votekick_config.lua`.")
-    MP.RegisterEvent("onChatMessage", "handle_chat_message")
     MP.CreateEventTimer("votekick_timeout_timer", 60 * 1000)
-    MP.RegisterEvent("votekick_timeout_timer", "votekick_timeout_handler")
 end
+MP.RegisterEvent("onChatMessage", "handle_chat_message")
+MP.RegisterEvent("votekick_timeout_timer", "votekick_timeout_handler")
 
 MP.RegisterEvent("onInit", "handle_init")
 
