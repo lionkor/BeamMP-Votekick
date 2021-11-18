@@ -106,7 +106,7 @@ local function handle_chat_message(sender_id, sender_name, message)
         local subcmd = string.sub(message, #votekick_command, -1)
         if #subcmd == 0 then
             send_help(sender_id)
-        else if votekick_in_progress then
+        elseif votekick_in_progress then
             MP.SendChatMessage(sender_id, "VOTEKICK: A vote is already in progress (to kick '"..votekick_name .."', started by '".. votekick_starter .."')")
             print("'" .. sender_name .. "' tried to start a votekick, but one is already in progress")
         else
@@ -133,7 +133,7 @@ local function handle_chat_message(sender_id, sender_name, message)
                 end
             end
         end
-    else if #message >= #votekick_yes and string.sub(message, 1, #votekick_yes) == votekick_yes then
+    elseif #message >= #votekick_yes and string.sub(message, 1, #votekick_yes) == votekick_yes then
         if votekick_in_progress then
             MP.SendChatMessage(sender_id, "VOTEKICK: You voted YES")
             MP.SendChatMessage(-1, "VOTEKICK: '" .. sender_name .. "' voted YES on vote to kick '" .. votekick_name .. "'")
@@ -145,7 +145,7 @@ local function handle_chat_message(sender_id, sender_name, message)
                 send_needed_amount()
             end
         end
-    else if #message >= #votekick_no and string.sub(message, 1, #votekick_no) == votekick_no then
+    elseif #message >= #votekick_no and string.sub(message, 1, #votekick_no) == votekick_no then
         if votekick_in_progress then
             MP.SendChatMessage(sender_id, "VOTEKICK: You voted NO")
             MP.SendChatMessage(-1, "VOTEKICK: '" .. sender_name .. "' voted NO on vote to kick '" .. votekick_name .. "'")
