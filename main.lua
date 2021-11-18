@@ -3,17 +3,54 @@
 -- load config as lua
 require("votekick_config")
 
--- id, name
-function get_player_by_name(name)
-    if name and #name > 0 then
-        local players = MP.GetPlayers()
-        for id,pname in pairs(players) do
-            if pname == name then
-                return id, pname
-            end
-        end
+-- returns true if 'str' starts with 'start', can be called with a table of items to check
+function startsWith(str, start, caseSensitive)
+  if type(start) == "string" then
+    if caseSensitive then
+      return str:sub(1, #start) == start
+    else
+      return str:sub(1, #start):lower() == start:lower()
     end
-    return nil
+  elseif type(start) == "table" then
+    for k,v in pairs(start) do
+      if startsWith(str, v, caseSensitive) then return true, v end
+    end
+  end
+  return false
+end
+
+function trim(s)
+  return (s:gsub("^%s*(.-)%s*$", "%1"))
+end
+
+function splitString(s, delimiter)
+  local result = {}
+  delimiter = delimiter or " "
+  for match in (s .. delimiter):gmatch("(.-)" .. delimiter) do
+    table.insert(result, match)
+  end
+  return result
+end
+
+-- the searched ID, the full name, the kind of match
+function findPlayerByName(input)
+  -- look for a match
+  targetPlayerNickname = input:trim():lower()
+  local allPlayers = MP.GetPlayers() or {}
+  for searchedPlayerID, searchedPlayerName in pairs(allPlayers) do
+    if searchedPlayerName:lower() == targetPlayerNickname then
+      return searchedPlayerID, searchedPlayerName, "full"
+    end
+  end
+
+  -- look for a name starting with the input
+  for searchedPlayerID, searchedPlayerName in pairs(allPlayers) do
+    if startsWith(searchedPlayerName, targetPlayerNickname) then
+      return searchedPlayerID, searchedPlayerName, "partial"
+    end
+  end
+
+  return nil, input, "none"
 end
 
 function send_help(id)
@@ -79,7 +116,7 @@ function handle_chat_message(sender_id, sender_name, message)
             if MP.GetPlayerCount() < 3 then
                 MP.SendChatMessage(sender_id, "VOTEKICK (to you): More than 2 people needed for a votekick to start.")
             else
-                local id, name = get_player_by_name(subcmd)
+                local id, name = findPlayerByName(subcmd)
                 if id and name then
                     votekick_in_progress = true
                     votekick_name = name
