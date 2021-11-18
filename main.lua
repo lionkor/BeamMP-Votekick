@@ -3,7 +3,7 @@
 -- load config as lua
 require("votekick_config")
 
-local function handle_init()
+function handle_init()
     local bad = false
     if not votekick_percent then
         print("error: votekick_percent missing from `votekick_config.lua`")
@@ -67,7 +67,7 @@ local votekick_name = nil
 local votekick_starter = nil
 local votekick_timer = nil
 
-local function votekick_timeout_handler()
+function votekick_timeout_handler()
     if votekick_timer then
         if votekick_timer:GetCurrent() > votekick_timeout_minutes * 60 then
             votekick_timer = nil
@@ -78,7 +78,7 @@ local function votekick_timeout_handler()
     end
 end
 
-local function handle_disconnect(id)
+function handle_disconnect(id)
     if id == votekick_id then
         votekick_in_progress = false
         MP.SendChatMessage(-1, "VOTEKICK: Player '" .. votekick_name .. "' left, so the votekick kicking them was cancelled.")
@@ -101,7 +101,7 @@ local function send_needed_amount()
     print("votekick for '" .. votekick_name .. "' needs " .. tostring(needed) .. " more votes")
 end
 
-local function handle_chat_message(sender_id, sender_name, message)
+function handle_chat_message(sender_id, sender_name, message)
     if #message >= #votekick_command and string.sub(message, 1, #votekick_command) == votekick_command then
         local subcmd = string.sub(message, #votekick_command, -1)
         if #subcmd == 0 then
@@ -160,5 +160,5 @@ local function handle_chat_message(sender_id, sender_name, message)
     end
 end
 
-MP.RegisterEvent("onInit", "handle_init")
+MP.RegisterEvent("OnInit", "handle_init")
 
