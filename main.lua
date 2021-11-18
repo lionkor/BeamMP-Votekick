@@ -108,10 +108,10 @@ function send_needed_amount()
 end
 
 function handle_chat_message(sender_id, sender_name, message)
-    message = string.sub(message, 2, -1)
+    message = string.sub(message, 2)
     print("got '" .. message .. "'")
     if #message >= #votekick_command and string.sub(message, 1, #votekick_command) == votekick_command then
-        local subcmd = string.sub(message, #votekick_command, -1)
+        local subcmd = string.sub(message, #votekick_command + 2)
         if #subcmd == 0 then
             send_help(sender_id)
         elseif votekick_in_progress then
@@ -139,7 +139,7 @@ function handle_chat_message(sender_id, sender_name, message)
                     MP.SendChatMessage(sender_id, "VOTEKICK (to you): Since you're the creator of this votekick, you count as a YES vote automatically and your vote has no effect")
                     send_needed_amount()
                 else
-                    MP.SendChatMessage(sender_id, "VOTEKICK: Player '" .. sender_name .. "' not found")
+                    MP.SendChatMessage(sender_id, "VOTEKICK: Player '" .. subcmd .. "' not found")
                 end
             end
         end
