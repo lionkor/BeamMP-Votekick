@@ -95,7 +95,7 @@ end
 function check_amount()
     local needed = votekick_needed - votekick_votes_yes
     if needed <= 0 then
-        MP.DropPlayer(votekick_id, "Votekicked with " .. tostring(votekick_votes_yes) .. " YES votes, " .. tostring(votekick_votes_no) .. " NO votes")
+        MP.DropPlayer(votekick_id, "Votekicked with " .. tostring(votekick_votes_yes) .. " YES vote"..(votekick_votes_no~=1 and 's' or '')..", " .. tostring(votekick_votes_no) .. " NO vote".. (votekick_votes_no~=1 and 's' or ''))
         MP.SendChatMessage(-1, "VOTEKICK: Player '" .. votekick_name .. "' was kicked (" .. tostring(votekick_votes_yes) .. " YES / " .. tostring(votekick_votes_no) .. " NO)")
         print("player '" .. votekick_name .. "' was kicked by votekick")
     end
