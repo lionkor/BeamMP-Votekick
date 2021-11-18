@@ -93,6 +93,7 @@ function handle_disconnect(id)
 end
 
 function do_kick()
+    votekick_in_progress = false
     MP.DropPlayer(votekick_id, "Votekicked with " .. tostring(votekick_votes_yes) .. " YES votes, " .. tostring(votekick_votes_no) .. " NO votes")
     MP.SendChatMessage(-1, "VOTEKICK: Player '" .. votekick_name .. "' was kicked (" .. tostring(votekick_votes_yes) .. " YES / " .. tostring(votekick_votes_no) .. " NO)")
     print("player '" .. votekick_name .. "' was kicked by votekick")
