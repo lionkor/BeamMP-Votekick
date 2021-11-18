@@ -92,13 +92,15 @@ function handle_disconnect(id)
     end
 end
 
+function do_kick()
+    MP.DropPlayer(votekick_id, "Votekicked with " .. tostring(votekick_votes_yes) .. " YES votes, " .. tostring(votekick_votes_no) .. " NO votes")
+    MP.SendChatMessage(-1, "VOTEKICK: Player '" .. votekick_name .. "' was kicked (" .. tostring(votekick_votes_yes) .. " YES / " .. tostring(votekick_votes_no) .. " NO)")
+    print("player '" .. votekick_name .. "' was kicked by votekick")
+end
+
 function check_amount()
     local needed = votekick_needed - votekick_votes_yes
-    if needed <= 0 then
-        MP.DropPlayer(votekick_id, "Votekicked with " .. tostring(votekick_votes_yes) .. " YES votes, " .. tostring(votekick_votes_no) .. " NO votes")
-        MP.SendChatMessage(-1, "VOTEKICK: Player '" .. votekick_name .. "' was kicked (" .. tostring(votekick_votes_yes) .. " YES / " .. tostring(votekick_votes_no) .. " NO)")
-        print("player '" .. votekick_name .. "' was kicked by votekick")
-    end
+    return needed <= 0
 end
 
 function send_needed_amount()
