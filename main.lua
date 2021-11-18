@@ -74,7 +74,7 @@ local votekick_starter = nil
 local votekick_timer = nil
 
 function votekick_timeout_handler()
-    if votekick_timer then
+    if votekick_in_progress and votekick_timer then
         if votekick_timer:GetCurrent() > votekick_timeout_minutes * 60 then
             votekick_timer = nil
             votekick_in_progress = false
