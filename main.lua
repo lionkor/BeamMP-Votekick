@@ -160,5 +160,5 @@ function handle_chat_message(sender_id, sender_name, message)
     end
 end
 
-MP.RegisterEvent("OnInit", "handle_init")
+MP.RegisterEvent("onInit", "handle_init")
 
