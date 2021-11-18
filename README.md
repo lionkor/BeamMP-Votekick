@@ -7,7 +7,7 @@ An implementation of a votekick system for [BeamMP](https://beammp.com).
 
 Also a test of the v2.4.0 BeamMP-Server Lua API, which I developed.
 
-Please read and edit `votekick.cfg` for configuration.
+Please read and edit `votekick_config.lua` for configuration.
 
 ## How to use
 
@@ -29,4 +29,4 @@ Then just write `/votekick <player_name>` in chat, like `/votekick LionKor`.
 
 ## Rules
 
-For rules like "how many people are needed to kick" and similar, check out `votekick.cfg`.
+For rules like "how many people are needed to kick" and similar, check out `votekick_config.lua`.

@@ -1,39 +1,39 @@
 -- Bootstraps the plugin
 
 -- load config as lua
-dofile("votekick.cfg")
+require("votekick_config.lua")
 
 local function handle_init()
     local bad = false
     if not votekick_percent then
-        print("error: votekick_percent missing from `votekick.cfg`")
+        print("error: votekick_percent missing from `votekick_config.lua`")
         bad = true
     end
     if not votekick_command then
-        print("error: votekick_command missing from `votekick.cfg`")
+        print("error: votekick_command missing from `votekick_config.lua`")
         bad = true
     end
     if not votekick_yes then
-        print("error: votekick_yes missing from `votekick.cfg`")
+        print("error: votekick_yes missing from `votekick_config.lua`")
         bad = true
     end
     if not votekick_no then
-        print("error: votekick_no missing from `votekick.cfg`")
+        print("error: votekick_no missing from `votekick_config.lua`")
         bad = true
     end
     if not votekick_timeout_minutes then
-        print("error: votekick_timeout_minutes missing from `votekick.cfg`")
+        print("error: votekick_timeout_minutes missing from `votekick_config.lua`")
         bad = true
     end
     if not votekick_repeatable then
-        print("error: votekick_repeatable missing from `votekick.cfg`")
+        print("error: votekick_repeatable missing from `votekick_config.lua`")
         bad = true
     end
     if bad then
-        print("error: votekick plugin failed to read all values from votekick.cfg, it's likely missing or misformatted. votekick plugin will not work.")
+        print("error: votekick plugin failed to read all values from votekick_config.lua, it's likely missing or misformatted. votekick plugin will not work.")
         return
     end
-    print("lionkor/votekick: Votekick requirement set to " .. tostring(votekick_percent) .. "%. This can be changed in the config file `votekick.cfg`.")
+    print("lionkor/votekick: Votekick requirement set to " .. tostring(votekick_percent) .. "%. This can be changed in the config file `votekick_config.lua`.")
     MP.RegisterEvent("onChatMessage", "handle_chat_message")
     MP.CreateEventTimer("votekick_timeout_timer", 60 * 1000)
     MP.RegisterEvent("votekick_timeout_timer", "votekick_timeout_handler")
