@@ -1,7 +1,7 @@
 -- Bootstraps the plugin
 
 -- load config as lua
-require("votekick_config.lua")
+require("votekick_config")
 
 local function handle_init()
     local bad = false
