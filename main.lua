@@ -125,6 +125,7 @@ function handle_chat_message(sender_id, sender_name, message)
                 if id and name then
                     votekick_in_progress = true
                     votekick_name = name
+                    votekick_starter = sender_name
                     votekick_timer = MP.CreateTimer()
                     votekick_id = id
                     votekick_needed = math.floor(MP.GetPlayerCount() * (1.0 / votekick_percent))
