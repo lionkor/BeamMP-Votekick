@@ -7,9 +7,9 @@ require("votekick_config")
 function get_player_by_name(name)
     if name and #name > 0 then
         local players = MP.GetPlayers()
-        for id,name in pairs(players) do
-            if name == name then
-                return id, name
+        for id,pname in pairs(players) do
+            if pname == name then
+                return id, pname
             end
         end
     end
