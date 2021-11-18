@@ -128,7 +128,7 @@ function handle_chat_message(sender_id, sender_name, message)
                     votekick_starter = sender_name
                     votekick_timer = MP.CreateTimer()
                     votekick_id = id
-                    votekick_needed = math.floor(MP.GetPlayerCount() * (1.0 / votekick_percent))
+                    votekick_needed = math.floor(MP.GetPlayerCount() * (votekick_percent / 100.0))
                     votekick_players_at_time_of_vote = MP.GetPlayers()
                     votekick_votes_no = 1 -- assume player to-be-kicked always votes no
                     votekick_votes_yes = 1 -- assume sender voted yes implicitly
