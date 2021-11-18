@@ -138,6 +138,8 @@ function handle_chat_message(sender_id, sender_name, message)
                     MP.SendChatMessage(id, "VOTEKICK (to you): Since you're the target of a votekick, you count as a NO vote automatically and your vote has no effect")
                     MP.SendChatMessage(sender_id, "VOTEKICK (to you): Since you're the creator of this votekick, you count as a YES vote automatically and your vote has no effect")
                     send_needed_amount()
+                else
+                    MP.SendChatMessage(sender_id, "VOTEKICK: Player '" .. sender_name .. "' not found")
                 end
             end
         end
@@ -153,6 +155,9 @@ function handle_chat_message(sender_id, sender_name, message)
             else
                 send_needed_amount()
             end
+        else
+            MP.SendChatMessage(sender_id, "VOTEKICK (to you): A vote is already in progress (to kick '"..votekick_name .."', started by '".. votekick_starter .."')")
+            print("'" .. sender_name .. "' tried to start a votekick, but one is already in progress")
         end
         return 1
     elseif #message >= #votekick_no and string.sub(message, 1, #votekick_no) == votekick_no then
@@ -166,6 +171,9 @@ function handle_chat_message(sender_id, sender_name, message)
             else
                 send_needed_amount()
             end
+        else
+            MP.SendChatMessage(sender_id, "VOTEKICK (to you): A vote is already in progress (to kick '"..votekick_name .."', started by '".. votekick_starter .."')")
+            print("'" .. sender_name .. "' tried to start a votekick, but one is already in progress")
         end
         return 1
     end
