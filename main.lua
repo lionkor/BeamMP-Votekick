@@ -7,7 +7,7 @@ require("votekick_config")
 function get_player_by_name(name)
     if name and #name > 0 then
         local players = MP.GetPlayers()
-        for id,name in players do
+        for id,name in pairs(players) do
             if name == name then
                 return id, name
             end
@@ -66,7 +66,7 @@ function send_needed_amount()
 end
 
 function handle_chat_message(sender_id, sender_name, message)
-    message = string.sub(message, 1, -1)
+    message = string.sub(message, 2, -1)
     print("got '" .. message .. "'")
     if #message >= #votekick_command and string.sub(message, 1, #votekick_command) == votekick_command then
         local subcmd = string.sub(message, #votekick_command, -1)
