@@ -20,7 +20,7 @@ votekick_command = "/votekick"
 -- Command used to vote YES for a votekick
 -- Usage will be:
 --      <command>
--- Example: 
+-- Example:
 --      /v yes
 -- It's recommended for this to start with a `/`.
 -- default: "/v yes"
@@ -30,7 +30,7 @@ votekick_yes = "/v yes"
 -- Command used to vote NO for a votekick
 -- Usage will be:
 --      <command>
--- Example: 
+-- Example:
 --      /v no
 -- It's recommended for this to start with a `/`.
 -- default: "/v no"
@@ -56,3 +56,4 @@ votekick_timeout_minutes = 5
 
 votekick_repeatable = false
 
+-- .
