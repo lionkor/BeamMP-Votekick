@@ -3,44 +3,10 @@
 -- load config as lua
 require("votekick_config")
 
-function handle_init()
-    local bad = false
-    if not votekick_percent then
-        print("error: votekick_percent missing from `votekick_config.lua`")
-        bad = true
-    end
-    if not votekick_command then
-        print("error: votekick_command missing from `votekick_config.lua`")
-        bad = true
-    end
-    if not votekick_yes then
-        print("error: votekick_yes missing from `votekick_config.lua`")
-        bad = true
-    end
-    if not votekick_no then
-        print("error: votekick_no missing from `votekick_config.lua`")
-        bad = true
-    end
-    if not votekick_timeout_minutes then
-        print("error: votekick_timeout_minutes missing from `votekick_config.lua`")
-        bad = true
-    end
-    if votekick_repeatable == nil then
-        print("error: votekick_repeatable missing from `votekick_config.lua`")
-        bad = true
-    end
-    if bad then
-        print("error: votekick plugin failed to read all values from votekick_config.lua, it's likely missing or misformatted. votekick plugin will not work.")
-        return
-    end
-    print("lionkor/votekick: Votekick requirement set to " .. tostring(votekick_percent) .. "%. This can be changed in the config file `votekick_config.lua`.")
-    MP.RegisterEvent("onChatMessage", "handle_chat_message")
-    MP.CreateEventTimer("votekick_timeout_timer", 60 * 1000)
-    MP.RegisterEvent("votekick_timeout_timer", "votekick_timeout_handler")
-end
+
 
 -- id, name
-local function get_player_by_name(name)
+function get_player_by_name(name)
     if name and #name > 0 then
         local players = MP.GetPlayers()
         for id,name in players do
@@ -52,7 +18,7 @@ local function get_player_by_name(name)
     return nil
 end
 
-local function send_help(id)
+function send_help(id)
     local help = string.format("Votekick plugin: To votekick, enter `%s name`, like `%s LionKor` to kick `LionKor`", votekick_command, votekick_command)
     MP.SendChatMessage(id, help)
 end
@@ -86,7 +52,7 @@ function handle_disconnect(id)
     end
 end
 
-local function check_amount()
+function check_amount()
     local needed = votekick_needed - votekick_votes_yes
     if needed <= 0 then
         MP.DropPlayer(votekick_id, "Votekicked with " .. tostring(votekick_votes_yes) .. " YES votes, " .. tostring(votekick_votes_no) .. " NO votes")
@@ -95,7 +61,7 @@ local function check_amount()
     end
 end
 
-local function send_needed_amount()
+function send_needed_amount()
     local needed = votekick_needed - votekick_votes_yes
     MP.SendChatMessage(-1, "VOTEKICK: " .. tostring(needed) .. " more YES vote(s) needed to kick '" .. votekick_name .. "'")
     print("votekick for '" .. votekick_name .. "' needs " .. tostring(needed) .. " more votes")
@@ -158,6 +124,42 @@ function handle_chat_message(sender_id, sender_name, message)
             end
         end
     end
+end
+
+function handle_init()
+    local bad = false
+    if not votekick_percent then
+        print("error: votekick_percent missing from `votekick_config.lua`")
+        bad = true
+    end
+    if not votekick_command then
+        print("error: votekick_command missing from `votekick_config.lua`")
+        bad = true
+    end
+    if not votekick_yes then
+        print("error: votekick_yes missing from `votekick_config.lua`")
+        bad = true
+    end
+    if not votekick_no then
+        print("error: votekick_no missing from `votekick_config.lua`")
+        bad = true
+    end
+    if not votekick_timeout_minutes then
+        print("error: votekick_timeout_minutes missing from `votekick_config.lua`")
+        bad = true
+    end
+    if votekick_repeatable == nil then
+        print("error: votekick_repeatable missing from `votekick_config.lua`")
+        bad = true
+    end
+    if bad then
+        print("error: votekick plugin failed to read all values from votekick_config.lua, it's likely missing or misformatted. votekick plugin will not work.")
+        return
+    end
+    print("lionkor/votekick: Votekick requirement set to " .. tostring(votekick_percent) .. "%. This can be changed in the config file `votekick_config.lua`.")
+    MP.RegisterEvent("onChatMessage", "handle_chat_message")
+    MP.CreateEventTimer("votekick_timeout_timer", 60 * 1000)
+    MP.RegisterEvent("votekick_timeout_timer", "votekick_timeout_handler")
 end
 
 MP.RegisterEvent("onInit", "handle_init")
