@@ -74,7 +74,7 @@ local votekick_starter = nil
 local votekick_timer = nil
 
 function votekick_timeout_handler()
-    if votekick_timer then
+    if votekick_in_progress and votekick_timer then
         if votekick_timer:GetCurrent() > votekick_timeout_minutes * 60 then
             votekick_timer = nil
             votekick_in_progress = false
@@ -92,13 +92,16 @@ function handle_disconnect(id)
     end
 end
 
+function do_kick()
+    votekick_in_progress = false
+    MP.DropPlayer(votekick_id, "Votekicked with " .. tostring(votekick_votes_yes) .. " YES vote"..(votekick_votes_no~=1 and 's' or '')..", " .. tostring(votekick_votes_no) .. " NO vote".. (votekick_votes_no~=1 and 's' or ''))
+    MP.SendChatMessage(-1, "VOTEKICK: Player '" .. votekick_name .. "' was kicked (" .. tostring(votekick_votes_yes) .. " YES / " .. tostring(votekick_votes_no) .. " NO)")
+    print("player '" .. votekick_name .. "' was kicked by votekick")
+end
+
 function check_amount()
     local needed = votekick_needed - votekick_votes_yes
-    if needed <= 0 then
-        MP.DropPlayer(votekick_id, "Votekicked with " .. tostring(votekick_votes_yes) .. " YES vote"..(votekick_votes_no~=1 and 's' or '')..", " .. tostring(votekick_votes_no) .. " NO vote".. (votekick_votes_no~=1 and 's' or ''))
-        MP.SendChatMessage(-1, "VOTEKICK: Player '" .. votekick_name .. "' was kicked (" .. tostring(votekick_votes_yes) .. " YES / " .. tostring(votekick_votes_no) .. " NO)")
-        print("player '" .. votekick_name .. "' was kicked by votekick")
-    end
+    return needed <= 0
 end
 
 function send_needed_amount()
@@ -125,9 +128,10 @@ function handle_chat_message(sender_id, sender_name, message)
                 if id and name then
                     votekick_in_progress = true
                     votekick_name = name
+                    votekick_starter = sender_name
                     votekick_timer = MP.CreateTimer()
                     votekick_id = id
-                    votekick_needed = math.floor(MP.GetPlayerCount() * (1.0 / votekick_percent))
+                    votekick_needed = math.floor(MP.GetPlayerCount() * (votekick_percent / 100.0))
                     votekick_players_at_time_of_vote = MP.GetPlayers()
                     votekick_votes_no = 1 -- assume player to-be-kicked always votes no
                     votekick_votes_yes = 1 -- assume sender voted yes implicitly
